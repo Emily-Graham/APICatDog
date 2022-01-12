@@ -6,14 +6,12 @@ while (restart == true)
 {
     //get valid user input
 
-    Console.WriteLine("What animal breeds would you like to read?");
-    Console.WriteLine("Enter 0 for cats.");
-    Console.WriteLine("Enter 1 for dogs.");
+    Console.WriteLine("Which animal breeds would you like to see?");
+    Console.WriteLine($"Enter 0 for cats.{Environment.NewLine}Enter 1 for dogs.");
 
     int userInput = Convert.ToInt32(Console.ReadLine());
 
     //give user feedback if incorrect
-    //if valid (0, 1) select relevant API code
 
 	// if 0, call Cat API, display cat breeds
     if (userInput == 0)
@@ -49,9 +47,8 @@ while (restart == true)
 //close connection and release resource
 httpClient.Dispose();
 
-
-
 }
+// if 1, call Dog API, display dog breeds
 else if (userInput == 1)
 {
 Console.WriteLine($"{Environment.NewLine}\x1B[4mDog Breeds:\x1B[24m{Environment.NewLine}");
@@ -62,7 +59,7 @@ Console.WriteLine($"{Environment.NewLine}\x1B[4mDog Breeds:\x1B[24m{Environment.
 		string getUrl = "https://dog.ceo/api/breeds/list";
 		Task<HttpResponseMessage> httpResponse = httpClient.GetAsync(getUrl);
 		HttpResponseMessage response = httpResponse.Result;
-		//Console.WriteLine(response.ToString());
+
 		//Response Data
 		HttpContent responseContent = response.Content;
 		Task<string> responseData = responseContent.ReadAsStringAsync();
