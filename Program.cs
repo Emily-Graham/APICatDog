@@ -1,86 +1,5 @@
 ﻿using Newtonsoft.Json;
 
-/* using System;
-using System.Collections.Generic;
-using System.Text.Json;
-using System.Threading.Tasks;
-using System.Linq;
-
-public class Statics
-{
-	public static readonly HttpClient CLIENT = new HttpClient();
-}
-
-namespace Models
-{
-	public class Facts
-	{
-		public List<Fact> data { get; set; }
-		public List<Link> links { get; set; }
-		public int last_page { get; set; }
-
-		public static async Task<Facts> Page(HttpClient client, int pageNo)
-		{
-			var content = new FormUrlEncodedContent(new Dictionary<string, string>() {
-				{ "page", pageNo.ToString() }
-			});
-
-			var request = new HttpRequestMessage();
-			request.Method = HttpMethod.Get;
-			request.Content = content;
-			request.RequestUri = new Uri("https://catfact.ninja/facts");
-
-
-			var response = await client.SendAsync(request);
-			var stream = await response.Content.ReadAsStreamAsync();
-			Facts facts = await JsonSerializer.DeserializeAsync<Facts>(stream);
-
-			return facts;
-		}
-
-		public static async Task<List<Fact>> All(HttpClient client)
-		{
-			var firstPage = await Facts.Page(client, 1);
-			var pages = firstPage.last_page;
-			List<Task<Facts>> tasks = Enumerable.Range(2, pages).Select(page => Facts.Page(client, page)).ToList();
-
-			var results = await Task.WhenAll(tasks);
-			var facts = results.SelectMany(f => f.data).ToList();
-
-			return firstPage.data.Concat(facts).ToList();
-		}
-	}
-
-	public class Link
-	{
-		public string url { get; set; }
-		public string label { get; set; }
-		public bool active { get; set; }
-	}
-
-	public class Fact
-	{
-		public string fact { get; set; }
-		public int length { get; set; }
-	}
-}
-
-public class Program
-{
-
-	public async static Task Main()
-	{
-		var facts = await Models.Facts.All(Statics.CLIENT);
-
-		Action<Models.Fact> factCallback = delegate (Models.Fact fact) {
-			Console.WriteLine(fact.fact);
-		};
-
-		facts.ForEach(factCallback);
-	}
-}*/
-
-
 bool restart = true;
 
 while (restart == true)
@@ -112,19 +31,20 @@ while (restart == true)
 		string data = responseData.Result;
 
 		dynamic deserializedData = JsonConvert.DeserializeObject<dynamic>(data);
-		object breedsArray = deserializedData.data;
+		//object[] breedsArray = deserializedData.data;
 
 		//empty list that will contain breeds
 		List<string> breeds = new List<string>();
 
 		// add the breed as a string to the list of breeds
-		foreach (object breedObject in breedsArray)
+		foreach (var breedObject in (dynamic) deserializedData.data)
 		{
-		breeds.Add(breedObject.breeds);
+			//breeds.Add(breedObject.breed);
+			Console.WriteLine(breedObject.breed.ToString());
 		}
 		
 
-		Console.WriteLine(breeds.ToString()); //change to the list of breeds
+		//Console.WriteLine(breeds.ToString()); //change to the list of breeds
 
 //close connection and release resourse
 httpClient.Dispose();
