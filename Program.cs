@@ -55,9 +55,35 @@ httpClient.Dispose();
 else if (userInput == 1)
 {
 Console.WriteLine("Dog Breeds:");
-// if 1, call Dog API, display dog breeds
-// arrange these into alphabetical order
-}
+
+		// if 1, call Dog API, display dog breeds
+		// arrange these into alphabetical order
+		HttpClient httpClient = new HttpClient();
+		string getUrl = "https://dog.ceo/api/breeds/list";
+		Task<HttpResponseMessage> httpResponse = httpClient.GetAsync(getUrl);
+		HttpResponseMessage response = httpResponse.Result;
+		//Console.WriteLine(response.ToString());
+		//Response Data
+		HttpContent responseContent = response.Content;
+		Task<string> responseData = responseContent.ReadAsStringAsync();
+		string data = responseData.Result;
+
+		dynamic deserializedData = JsonConvert.DeserializeObject<dynamic>(data);
+		//Console.WriteLine(deserializedData.ToString());
+
+		foreach (var breedObject in (dynamic) deserializedData.message)
+		{
+			//breeds.Add(breedObject.breed);
+			/*if (breedObject) {
+
+			}
+			else 
+			{
+				Console.WriteLine(breedObject.breed.ToString());
+			}*/
+			Console.WriteLine(breedObject.ToString());
+		}
+	}
 else
 {
 Console.WriteLine("Please type either 0 (cats) or 1 (dogs) and press enter");
