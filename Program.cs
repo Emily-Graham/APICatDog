@@ -27,13 +27,13 @@ while (restart == true)
 		Task<string> responseData = responseContent.ReadAsStringAsync();
 		string data = responseData.Result;
 
-		dynamic deserializedData = JsonConvert.DeserializeObject<dynamic>(data);
+		dynamic? deserializedData = JsonConvert.DeserializeObject<dynamic>(data);
 
 		//empty list that will contain breeds
 		List<string> catBreeds = new List<string>();
 
 		// add the breed as a string to the list of breeds
-		foreach (var breedObject in (dynamic) deserializedData.data)
+		foreach (var breedObject in  deserializedData.data)
 		{
 			catBreeds.Add(breedObject.breed.ToString());
 		}
@@ -65,12 +65,12 @@ Console.WriteLine($"{Environment.NewLine}\x1B[4mDog Breeds:\x1B[24m{Environment.
 		Task<string> responseData = responseContent.ReadAsStringAsync();
 		string data = responseData.Result;
 
-		dynamic deserializedData2 = JsonConvert.DeserializeObject<dynamic>(data);
+		dynamic? deserializedData2 = JsonConvert.DeserializeObject<dynamic>(data);
 
 		//empty list that will contain breeds
 		List<string> dogBreeds = new List<string>();
 
-		foreach (var breedObject in (dynamic) deserializedData2.message)
+		foreach (var breedObject in  deserializedData2.message)
 		{
 			dogBreeds.Add(breedObject.ToString());
 		}
@@ -88,7 +88,7 @@ Console.WriteLine("Please type either 0 or 1 and press enter");
 
 // Give user options to exit or call more results
 Console.WriteLine("would you like to continue? Type y to continue and hit enter. Hit enter to exit.");
-string userChoice = Console.ReadLine();
+string? userChoice = Console.ReadLine();
 if (userChoice == "y") { restart = true; }
 else if (userChoice != "y") { restart = false; }
 };
