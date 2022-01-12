@@ -18,35 +18,35 @@ while (restart == true)
 	// if 0, call Cat API, display cat breeds
     if (userInput == 0)
     {
-        Console.WriteLine("Cat Breeds:");
+        Console.WriteLine($"{Environment.NewLine}\x1B[4mCat Breeds:\x1B[24m {Environment.NewLine}");
 		
 		HttpClient httpClient = new HttpClient();
 		string getUrl = "https://catfact.ninja/breeds";
 		Task<HttpResponseMessage> httpResponse = httpClient.GetAsync(getUrl);
 		HttpResponseMessage response = httpResponse.Result;
-		//Console.WriteLine(response.ToString());
 		//Response Data
 		HttpContent responseContent = response.Content;
 		Task<string> responseData = responseContent.ReadAsStringAsync();
 		string data = responseData.Result;
 
 		dynamic deserializedData = JsonConvert.DeserializeObject<dynamic>(data);
-		//object[] breedsArray = deserializedData.data;
 
 		//empty list that will contain breeds
-		List<string> breeds = new List<string>();
+		List<string> catBreeds = new List<string>();
 
 		// add the breed as a string to the list of breeds
 		foreach (var breedObject in (dynamic) deserializedData.data)
 		{
-			//breeds.Add(breedObject.breed);
-			Console.WriteLine(breedObject.breed.ToString());
+			catBreeds.Add(breedObject.breed.ToString());
 		}
-		
+		foreach (string breed in catBreeds)
+		{
+			Console.WriteLine($"	{breed}");
+		}
 
-		//Console.WriteLine(breeds.ToString()); //change to the list of breeds
+		Console.WriteLine($"{Environment.NewLine}Total Breeds: {catBreeds.Count}{Environment.NewLine}");
 
-//close connection and release resourse
+//close connection and release resource
 httpClient.Dispose();
 
 
@@ -54,7 +54,7 @@ httpClient.Dispose();
 }
 else if (userInput == 1)
 {
-Console.WriteLine("Dog Breeds:");
+Console.WriteLine($"{Environment.NewLine}\x1B[4mDog Breeds:\x1B[24m{Environment.NewLine}");
 
 		// if 1, call Dog API, display dog breeds
 		// arrange these into alphabetical order
@@ -68,28 +68,28 @@ Console.WriteLine("Dog Breeds:");
 		Task<string> responseData = responseContent.ReadAsStringAsync();
 		string data = responseData.Result;
 
-		dynamic deserializedData = JsonConvert.DeserializeObject<dynamic>(data);
-		//Console.WriteLine(deserializedData.ToString());
+		dynamic deserializedData2 = JsonConvert.DeserializeObject<dynamic>(data);
 
-		foreach (var breedObject in (dynamic) deserializedData.message)
+		//empty list that will contain breeds
+		List<string> dogBreeds = new List<string>();
+
+		foreach (var breedObject in (dynamic) deserializedData2.message)
 		{
-			//breeds.Add(breedObject.breed);
-			/*if (breedObject) {
-
-			}
-			else 
-			{
-				Console.WriteLine(breedObject.breed.ToString());
-			}*/
-			Console.WriteLine(breedObject.ToString());
+			dogBreeds.Add(breedObject.ToString());
 		}
+		foreach (string breed in dogBreeds)
+		{
+			Console.WriteLine($"	{breed}");
+		}
+
+		Console.WriteLine($"{Environment.NewLine}Total Breeds: {dogBreeds.Count}{Environment.NewLine}");
 	}
 else
 {
-Console.WriteLine("Please type either 0 (cats) or 1 (dogs) and press enter");
+Console.WriteLine("Please type either 0 or 1 and press enter");
 }
 
-// Give user options to exit, or continue program (call more results)
+// Give user options to exit or call more results
 Console.WriteLine("would you like to continue? Type y to continue and hit enter. Hit enter to exit.");
 string userChoice = Console.ReadLine();
 if (userChoice == "y") { restart = true; }
